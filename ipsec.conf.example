@@ -1,0 +1,26 @@
+config setup
+#charondebug=" dmn 1, mgr 1, ike 4, chd 4, job 1, cfg 4, knl 4, net 5, enc 3, lib 1, esp 4"
+#charondebug="dmn 4, mgr 4, ike 4, chd 4,  job 4,  cfg 4,  knl 4,  net 4, asn 4, enc 4, lib 4, esp 4, tls 4, tnc 4, imc 4, imv 4, pts 4"
+
+
+conn %default
+  ikelifetime=28800
+  lifetime=3600
+  rekeymargin=3m
+  keyexchange=ikev2
+  authby=psk
+  aggressive=no
+  compress=no
+  auto=start
+  dpdaction=restart
+  ike=aes128-sha256-modp2048
+  esp=aes128-sha256-modp2048
+
+conn vpn
+  left=172.17.0.2  # container IP address
+  leftid=103.96.86.209  # curl ifconfig.me to get this info
+  leftsourceip=172.17.0.2  # container IP address
+  leftsubnet=172.17.0.2/32  # container IP with /32 (just this host)
+  leftfirewall=yes
+  right=34.151.124.242  # remote endpoint address
+  rightsubnet=10.152.0.0/20  # remote subnet

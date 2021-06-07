@@ -1,0 +1,46 @@
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+name: vpn
+spec:
+selector:
+ matchLabels:
+   app: vpn
+serviceName: vpn
+replicas: 1
+template:
+ metadata:
+   labels:
+     app: vpn
+ spec:
+   containers:
+     - name: vpn
+       image: hwdsl2/ipsec-vpn-server
+       imagePullPolicy: Always
+       securityContext:
+         privileged: true
+       ports:
+         - containerPort: 500
+           hostPort: 500
+           name: vpn-isakmp
+           protocol: UDP
+         - containerPort: 4500
+           hostPort: 4500
+           name: vpn-ike
+           protocol: UDP
+       env:
+         - name: "VPN_IPSEC_PSK"
+           value: "vpn_ipsec_psk"
+         - name: "VPN_USER"
+           value: "vpn_user"
+         - name: "VPN_PASSWORD"
+           value: "vpn_password"
+       lifecycle:
+         postStart:
+           exec:
+             command:
+               - "cat"
+               - "someip"
+               - "somedomain"
+               - ">"
+               - "/etc/hosts"

@@ -1,0 +1,23 @@
+conn %default
+    ikelifetime=28800
+    lifetime=3600
+    rekeymargin=3m
+    keyexchange=ikev2
+    authby=psk
+    aggressive=no
+    auto=start
+    compress=no
+    dpdaction=restart
+    ike=aes128-sha256-modp2048
+    esp=aes128-sha256-modp2048
+
+conn xplt
+    leftsubnet=10.152.0.0/20 # gcloud internal subnet
+    leftid=34.151.124.242  # gcloud
+    leftfirewall=yes
+    leftsourceip=10.152.0.8 #gcloud internal IP address
+    leftsourceip=34.151.124.242
+    right=103.96.86.209
+    rightsubnet=172.17.0.2/32
+    rightid=103.96.86.209
+    rightsourceip=192.168.10.0/24 # arbitrary address pool
